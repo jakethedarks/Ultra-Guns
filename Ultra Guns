@@ -3,59 +3,68 @@ local _v8,_v9=_v1.LocalPlayer,loadstring(game:HttpGet("\104\116\116\112\115\58\4
 local _s1={AR=false,IJ=false,WS={E=false,V=16},TP={E=false,V=1},NC=false,UI={K="RightShift"},ER={E=false,HT=6,TD=40,WT=0.6,HC=0,LHT=0,IT=false,RT=3,Db=0.08},MB={D=false}}
 local _b1,_c1,_c2,_c3,_c4,_c5,_c6,_c7,_c8=true,nil,nil,nil,nil,nil,nil,nil,nil
 
+-- Lógica Anti-Ragdoll Ultra integrada de forma silenciosa
 local function _f1(st) 
-    _s1.AR=st; 
-    local ev=_v5:WaitForChild("Events",5); 
-    ev=ev and ev:WaitForChild("RagdollState",5); 
+    _s1.AR = st; 
+    local ev = _v5:WaitForChild("Events", 5); 
+    ev = ev and ev:WaitForChild("RagdollState", 5); 
+    
     if st then 
-        _s1.OG=_s1.OG or workspace.Gravity; 
-        workspace.Gravity=666; 
-        
         if _v8.Character then
-            local h=_v8.Character:FindFirstChildOfClass("Humanoid")
-            if h and not _s1.OJP then _s1.OJP=h.JumpPower end
+            local h = _v8.Character:FindFirstChildOfClass("Humanoid")
+            if h and not _s1.OJP then _s1.OJP = h.JumpPower end
         end
         
-        _c3=_v3.Heartbeat:Connect(function() 
+        -- Tabla de estados perjudiciales a bloquear (Sin afectar al estado de muerte)
+        local badStates = {
+            [Enum.HumanoidStateType.Physics] = true,
+            [Enum.HumanoidStateType.FallingDown] = true,
+            [Enum.HumanoidStateType.GettingUp] = true,
+            [Enum.HumanoidStateType.Ragdoll] = true
+        }
+
+        _c3 = _v3.Heartbeat:Connect(function() 
             if not _s1.AR then return end; 
+            
             if ev then pcall(function() ev:FireServer(false) end) end; 
+            
             if _v8.Character then 
-                local h=_v8.Character:FindFirstChildOfClass("Humanoid"); 
+                local h = _v8.Character:FindFirstChildOfClass("Humanoid"); 
                 if h then 
-                    h:SetStateEnabled(Enum.HumanoidStateType.Ragdoll,false) 
-                    h:SetStateEnabled(Enum.HumanoidStateType.FallingDown,false) 
-                    local cS=h:GetState(); 
-                    if cS==Enum.HumanoidStateType.FallingDown or cS==Enum.HumanoidStateType.Ragdoll then 
-                        h:ChangeState(Enum.HumanoidStateType.GettingUp) 
+                    h:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, false) 
+                    h:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false) 
+                    
+                    if badStates[h:GetState()] then 
+                        h:ChangeState(Enum.HumanoidStateType.Running) 
                     end; 
-                    h.PlatformStand=false;
-                    h.UseJumpPower=true;
-                    h.JumpPower=99;
+                    
+                    h.PlatformStand = false;
+                    h.UseJumpPower = true;
+                    h.JumpPower = 99; 
                 end 
+                
+                -- Limpieza en tiempo real de scripts de aturdimiento
+                for _, obj in ipairs(_v8.Character:GetDescendants()) do
+                    if obj:IsA("LocalScript") then
+                        local name = obj.Name:lower()
+                        if name:find("stun") or name:find("fall") or name:find("ragdoll") then
+                            obj.Disabled = true
+                        end
+                    end
+                end
             end 
         end); 
-        _c8=_v3.Stepped:Connect(function() 
-            if not _s1.AR then return end; 
-            if _v8.Character then 
-                local h=_v8.Character:FindFirstChildOfClass("Humanoid"); 
-                if h then 
-                    local cS=h:GetState(); 
-                    if cS==Enum.HumanoidStateType.Physics then 
-                        h:ChangeState(Enum.HumanoidStateType.GettingUp) 
-                    end 
-                end 
-            end 
-        end) 
+        
     else 
-        if _s1.OG then workspace.Gravity=_s1.OG else workspace.Gravity=196.2 end; 
         if _c3 then _c3:Disconnect() end; 
         if _c8 then _c8:Disconnect() end; 
+        
         if _v8.Character then 
-            local h=_v8.Character:FindFirstChildOfClass("Humanoid"); 
+            local h = _v8.Character:FindFirstChildOfClass("Humanoid"); 
             if h then 
-                h:SetStateEnabled(Enum.HumanoidStateType.Ragdoll,true) 
-                h:SetStateEnabled(Enum.HumanoidStateType.FallingDown,true)
-                if _s1.OJP then h.JumpPower=_s1.OJP else h.JumpPower=50 end 
+                h:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, true) 
+                h:SetStateEnabled(Enum.HumanoidStateType.FallingDown, true)
+                if _s1.OJP then h.JumpPower = _s1.OJP else h.JumpPower = 50 end 
             end 
         end 
     end 
@@ -84,7 +93,6 @@ _w1:SetToggleKey(Enum.KeyCode[_s1.UI.K])
 
 local _tb1=_w1:Tab({Title="Movilidad",Icon="solar:running-bold"})
 
--- [NUEVO] Bandera de inicialización para Walk Speed
 local _initWS = false
 _tb1:Input({
     Title="Walk Speed",
@@ -96,17 +104,16 @@ _tb1:Input({
             _s1.WS.V=v 
         else 
             _s1.WS.V=16 
-            if _initWS then -- Solo notifica si no es la primera carga
+            if _initWS then 
                 _v9:Notify({Title="Ajuste automático", Content="Velocidad restaurada a 16 por defecto.", Duration=4})
             end
         end 
-        _initWS = true -- Activa la bandera después de cargar
+        _initWS = true 
     end
 })
 
 _tb1:Toggle({Title="Loop Speed",Desc="Mantiene la velocidad constante",Value=_s1.WS.E,Callback=function(s) _s1.WS.E=s end})
 
--- [NUEVO] Bandera de inicialización para TP Walk
 local _initTP = false
 _tb1:Input({
     Title="TP Walk",
@@ -118,11 +125,11 @@ _tb1:Input({
             _s1.TP.V=v 
         else 
             _s1.TP.V=1
-            if _initTP then -- Solo notifica si no es la primera carga
+            if _initTP then 
                 _v9:Notify({Title="Ajuste automático", Content="TP Walk restaurado a 1 por defecto.", Duration=4})
             end
         end 
-        _initTP = true -- Activa la bandera después de cargar
+        _initTP = true 
     end
 })
 
