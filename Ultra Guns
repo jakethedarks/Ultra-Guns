@@ -166,8 +166,8 @@ _tb1:Input({
 })
 
 _tb1:Toggle({Title="Loop TP Walk",Desc="Avanza ignorando colisiones (Dash)",Value=_s1.TP.E,Callback=function(s) _s1.TP.E=s; if _btn1 then _btn1.Text=s and "DASH\nON" or "DASH\nOFF"; _btn1.BackgroundColor3=s and Color3.fromRGB(37,122,247) or Color3.fromRGB(100,100,100) end end})
-_tb1:Toggle({Title="Anti-Ragdoll",Desc="Evita que tu personaje se caiga o tropiece",Value=_s1.AR,Callback=_f1})
-_tb1:Toggle({Title="Escape Ragdoll",Desc="Te libera automáticamente de agarres o combos fuertes",Value=_s1.ER.E,Callback=function(s) _s1.ER.E=s end})
+_tb1:Toggle({Title="Anti-Ragdoll",Desc="Evita que tu personaje se caiga o tropiece (No hay daño de caída)",Value=_s1.AR,Callback=_f1})
+_tb1:Toggle({Title="Escape Ragdoll",Desc="Te libera automáticamente de del cooldonw o que te papen",Value=_s1.ER.E,Callback=function(s) _s1.ER.E=s end})
 _tb1:Toggle({Title="Infinite Jump",Desc="Te permite saltar en el aire sin límites",Value=_s1.IJ,Callback=function(s) _s1.IJ=s end})
 _tb1:Toggle({Title="Noclip",Desc="Atraviesa paredes como si fueras un fantasma",Value=_s1.NC,Callback=function(s) _s1.NC=s; if not s and _v8.Character then for _,v in pairs(_v8.Character:GetChildren()) do if v:IsA("BasePart") and v.Name~="HumanoidRootPart" then v.CanCollide=true end end end end})
 
