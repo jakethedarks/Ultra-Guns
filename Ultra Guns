@@ -17,7 +17,6 @@ local function _f1(st)
         
         -- Tabla de estados perjudiciales a bloquear (Sin afectar al estado de muerte)
         local badStates = {
-            [Enum.HumanoidStateType.Physics] = true,
             [Enum.HumanoidStateType.FallingDown] = true,
             [Enum.HumanoidStateType.GettingUp] = true,
             [Enum.HumanoidStateType.Ragdoll] = true
