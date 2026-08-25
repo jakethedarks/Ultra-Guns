@@ -3,17 +3,15 @@ local _v8,_v9=_v1.LocalPlayer,loadstring(game:HttpGet("\104\116\116\112\115\58\4
 local _s1={AR=false,IJ=false,WS={E=false,V=16},TP={E=false,V=1},NC=false,UI={K="RightShift"},ER={E=false,HT=6,TD=40,WT=0.6,HC=0,LHT=0,IT=false,RT=3,Db=0.08},MB={D=false}}
 local _b1,_c1,_c2,_c3,_c4,_c5,_c6,_c7,_c8=true,nil,nil,nil,nil,nil,nil,nil,nil
 
--- Lógica Anti-Ragdoll Ultra integrada de forma silenciosa
+-- Lógica Anti-Ragdoll Ultra corregida (Sin afectar el salto)
 local function _f1(st) 
     _s1.AR = st; 
     local ev = _v5:WaitForChild("Events", 5); 
     ev = ev and ev:WaitForChild("RagdollState", 5); 
     
     if st then 
-        if _v8.Character then
-            local h = _v8.Character:FindFirstChildOfClass("Humanoid")
-            if h and not _s1.OJP then _s1.OJP = h.JumpPower end
-        end
+        -- Asegurarnos de desconectar bucles anteriores para evitar duplicados
+        if _c3 then _c3:Disconnect(); _c3 = nil end
         
         -- Tabla de estados perjudiciales a bloquear (Sin afectar al estado de muerte)
         local badStates = {
@@ -38,8 +36,7 @@ local function _f1(st)
                     end; 
                     
                     h.PlatformStand = false;
-                    h.UseJumpPower = true;
-                    h.JumpPower = 99; 
+                    -- Eliminada toda la lógica del JumpPower que sobraba
                 end 
                 
                 -- Limpieza en tiempo real de scripts de aturdimiento
@@ -55,15 +52,18 @@ local function _f1(st)
         end); 
         
     else 
-        if _c3 then _c3:Disconnect() end; 
-        if _c8 then _c8:Disconnect() end; 
+        -- Apagado limpio y seguro
+        if _c3 then 
+            _c3:Disconnect(); 
+            _c3 = nil; 
+        end; 
         
         if _v8.Character then 
             local h = _v8.Character:FindFirstChildOfClass("Humanoid"); 
             if h then 
                 h:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, true) 
                 h:SetStateEnabled(Enum.HumanoidStateType.FallingDown, true)
-                if _s1.OJP then h.JumpPower = _s1.OJP else h.JumpPower = 50 end 
+                -- Eliminada la restauración errónea del JumpPower
             end 
         end 
     end 
