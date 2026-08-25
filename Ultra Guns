@@ -174,7 +174,7 @@ _tb1:Toggle({Title="Noclip",Desc="Atraviesa paredes como si fueras un fantasma",
 local _tb2=_w1:Tab({Title="Teletransportador",Icon="solar:map-point-bold"})
 _tb2:Button({Title="Reset Character",Desc="Reinicia tu personaje sin bugs",Color=Color3.fromRGB(46,204,113),Justify="Center",Callback=function() if _v8.Character then local h=_v8.Character:FindFirstChildOfClass("Humanoid") if h then h.Health=0 h:ChangeState(Enum.HumanoidStateType.Dead) end _v8.Character:BreakJoints() end end})
 local function _f5() local l={}; for _,p in pairs(_v1:GetPlayers()) do if p~=_v8 then table.insert(l,p.Name) end end; return l end
-local _dp1=_tb2:Dropdown({Title="Select Player",Desc="Elige a un jugador de la lista",Values=_f5(),AllowNone=true,Callback=function() end})
+local _dp1=_tb2:Dropdown({Title="Select Player",Desc="Elige a un jugador de la lista (Auto-refresco cada 66s)",Values=_f5(),AllowNone=true,Callback=function() end})
 task.spawn(function() while _b1 do task.wait(66) if _b1 and _dp1 then pcall(function() _dp1:Refresh(_f5()) end) end end end)
 _tb2:Button({Title="Teleport to Selected",Desc="Viaja seguro en mapas gigantes",Color=Color3.fromRGB(37,122,247),Justify="Center",Callback=function() local tg=_v1:FindFirstChild(_dp1.Value or ""); if tg and tg.Character and tg.Character:FindFirstChild("HumanoidRootPart") and _v8.Character and _v8.Character:FindFirstChild("HumanoidRootPart") then local hrp=_v8.Character.HumanoidRootPart; hrp.Anchored=true; _v8.Character:PivotTo(tg.Character.HumanoidRootPart.CFrame*CFrame.new(0,0,3)); task.delay(0.6,function() if hrp then hrp.Anchored=false end end) end end})
 local _b2=false
