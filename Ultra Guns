@@ -39,7 +39,11 @@ local function _f1(st)
     
     if st then 
         if _c3 then _c3:Disconnect(); _c3 = nil end
-        
+
+_c3 = _v3.Heartbeat:Connect(function() 
+            if not _s1.AR then return end; 
+            if ev then pcall(function() ev:FireServer(false) end) end; 
+            
         local badStates = {
             [Enum.HumanoidStateType.Physics] = true,
             [Enum.HumanoidStateType.FallingDown] = true,
@@ -47,10 +51,7 @@ local function _f1(st)
             [Enum.HumanoidStateType.Ragdoll] = true
         }
 
-        _c3 = _v3.Heartbeat:Connect(function() 
-            if not _s1.AR then return end; 
-            if ev then pcall(function() ev:FireServer(false) end) end; 
-            
+        
             if _v8.Character then 
                 local h = _v8.Character:FindFirstChildOfClass("Humanoid"); 
                 if h then 
