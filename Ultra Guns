@@ -1,6 +1,6 @@
 local _v1,_v2,_v3,_v4,_v5,_v6,_v7=game:GetService("Players"),game:GetService("UserInputService"),game:GetService("RunService"),game:GetService("CoreGui"),game:GetService("ReplicatedStorage"),game:GetService("TeleportService"),game:GetService("HttpService")
 local _v8,_v9=_v1.LocalPlayer,loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua"))()
-local _s1={AR=false,IJ=false,WS={E=false,V=16},TP={E=false,V=1},NC=false,UI={K="RightShift"},ER={E=false,HT=6,TD=40,WT=0.6,HC=0,LHT=0,IT=false,RT=3,Db=0.08},MB={D=false}}
+local _s1={AR=false,IJ=false,WS={E=false,V=16},TP={E=false,V=1},NC=false,UI={K="RightShift"},ER={E=false,HT=6,TD=66,WT=0.6,HC=0,LHT=0,IT=false,RT=3,Db=0.08},MB={D=false}}
 local _b1,_c1,_c2,_c3,_c4,_c5,_c6,_c7,_c8=true,nil,nil,nil,nil,nil,nil,nil,nil
 -- SISTEMA DE MEMORIA PARA SCRIPTS
 -- ==========================================
