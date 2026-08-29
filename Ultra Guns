@@ -121,7 +121,7 @@ local _btn1
 _btn1=_f4("DASH\nOFF",UDim2.fromScale(0.72,0.04),Color3.fromRGB(100,100,100),function() _s1.TP.E=not _s1.TP.E; _btn1.Text=_s1.TP.E and "DASH\nON" or "DASH\nOFF"; _btn1.BackgroundColor3=_s1.TP.E and Color3.fromRGB(37,122,247) or Color3.fromRGB(100,100,100) end)
 _f6(_btn1)
 
-local _w1=_v9:CreateWindow({Title="☢️ Family HS HUB",Author="by jake_Hs",Folder="HsHub",Accent=Color3.fromRGB(255,255,0),Transparent=true,Theme="Amber",BackgroundImageTransparency=0.99,Size=UDim2.fromOffset(580,460),Resizable=true,HideSearchBar=true,ScrollBarEnabled=false,OpenButton={Title="☢️ HS ULTRA GUNS",CornerRadius=UDim.new(1,0),StrokeThickness=2,Enabled=true,Draggable=true,Scale=0.8,Color=ColorSequence.new(Color3.fromHex("#ffff00"),Color3.fromHex("#ffff00"))}})
+local _w1=_v9:CreateWindow({Title="☢️ Family HS HUB",Author="by jake_Hs",Folder="HsHub",Accent=Color3.fromRGB(255,255,0),Transparent=true,Theme="Amber",BackgroundImageTransparency=9,Size=UDim2.fromOffset(580,460),Resizable=true,HideSearchBar=true,ScrollBarEnabled=false,OpenButton={Title="☢️ HS ULTRA GUNS",CornerRadius=UDim.new(1,0),StrokeThickness=2,Enabled=true,Draggable=true,Scale=0.8,Color=ColorSequence.new(Color3.fromHex("#ffff00"),Color3.fromHex("#ffff00"))}})
 _w1:SetToggleKey(Enum.KeyCode[_s1.UI.K])
 
 local _tb1=_w1:Tab({Title="Movilidad",Icon="solar:running-bold"})
